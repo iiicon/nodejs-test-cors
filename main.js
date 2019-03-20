@@ -1,15 +1,30 @@
 myButton.addEventListener('click', () => {
+  jQuery.ajax('http://localhost:8082/xxx', 'POST', 'a=1&b=2', (res)=>{
+    console.log(res)
+  },(e)=>{
+    console.log(e)
+  })
+})
+
+window.jQuery = function (nodeOrSelector) {
+  var nodes = {}
+  nodes.xxx = function() {}
+  return nodes
+}
+
+window .jQuery.ajax = function(url, method, data, successFn, errorFn) {
   var xhr = new XMLHttpRequest()
-  xhr.open('GET', 'http://localhost:8082/xxx', true)
-  xhr.onreadystatechange = function() {
+  xhr.open(method, url, true)
+  xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       console.log(`status is ${xhr.status}`)
       if (xhr.status >= 200 && xhr.status < 400) {
-        console.log(typeof xhr.responseText)
-        console.log(xhr.responseText)
+        successFn.call(undefined, xhr.responseText)
+      }else {
+        errorFn.call(undefined, xhr)
       }
     }
   }
-  
+
   xhr.send()
-})
+}
